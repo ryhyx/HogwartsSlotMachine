@@ -20,39 +20,25 @@ function stop(index) {
     const firstImageAlt = reels[index].querySelector("li:first-child img").alt;
     altTextArray.push(firstImageAlt);
     stoppedCount++;
-    if(chance == 0){
-        alert("Game over 😥 ")
-        //TODO: the start butten shouldent work anymore id user click on it
-    }
-    else if (stoppedCount === 3 && altTextArray.every(alt => alt === altTextArray[0])) {
-        alert("😍🎇 All pictures Are the same!\nYour character is: " + altTextArray[0]);
+    
+    if (stoppedCount === 3) {
+        // Reset the stoppedCount array and proceed to check for new images in a new try
         stoppedCount = 0;
-        chance -- ;
-    }
-    else if (stoppedCount === 3 && (altTextArray[0] === altTextArray[1] ||
-                                    altTextArray[0] === altTextArray[2] ||
-                                    altTextArray[1] === altTextArray[2])){
-             chance ++;
-             alert("That Was close! 😲 \n You'll get a new chance \n"+ chance + "left");
-        
+        if (chance === 0) {
+            alert("Game over 😥 ");
+            // TODO: Disable the start button
+        } else if (altTextArray.every(alt => alt === altTextArray[0])) {
+            chance=chance+1;
+            alert("😍🎇 All pictures Are the same!\nYour character is: " + altTextArray[0]);
+            
+        } else if (altTextArray[0] === altTextArray[1] || altTextArray[0] === altTextArray[2] || altTextArray[1] === altTextArray[2]) {
+            chance=chance+1;
+            alert("That Was close! 😲 \n You'll get a new chance \n" +chance+ " left");
+        }
+        else{
+            chance--;
+        }
+        // Clear the altTextArray for the new try
+        altTextArray = [];
     }
 }
-
-window.onload = function () {
-    
-    slot.resetLocationInfo();
-    StartBtn.addEventListener("click", function (e) {
-        e.target.setAttribute("disabled", true);
-        slot.start();
-        for (let i = 0; i < threeD_Btn.length; i++) {
-            threeD_Btn[i].removeAttribute("disabled");
-        }
-    });
-
-    for (let i = 0; i < threeD_Btn.length; i++) {
-        threeD_Btn[i].addEventListener("click", function (e) {
-            slot.stop(e.target.getAttribute("data-val"));
-        });
-    }
-};
-
