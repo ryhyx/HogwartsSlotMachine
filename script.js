@@ -12,7 +12,7 @@ function rotateImages(ul) {
 function start() {
     chance--;
     intervalIds.forEach(clearInterval);
-    intervalIds = reels.map((ul) => setInterval(() => rotateImages(ul), 1000));
+    intervalIds = reels.map((ul) => setInterval(() => rotateImages(ul), 500));
 }
 
 function stop(index) {
@@ -37,8 +37,9 @@ function stop(index) {
         }
         else{
             chance--;
+            alert(chance+ " left");
         }
-        // Clear the altTextArray for the new try
+       
         altTextArray = [];
     }
 }
