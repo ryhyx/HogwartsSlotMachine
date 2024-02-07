@@ -1,77 +1,45 @@
+const reels = Array.from(document.querySelectorAll(".reels"));
+let intervalIds = [];
+let altTextArray = [];
+let chance = 5 ;
+let stoppedCount = 0;
 
-let ScreenSlot = document.getElementById("ScreenSlot");
-let reel = document.getElementsByClassName("reel");
-let reels = document.getElementsByClassName("reels");
-let threeD_Btn = document.getElementsByClassName("threeD_Btn"); //stopbtn
-let StartBtn = document.getElementById("StartBtn");
-let sec = 100; //speed of reel(per second)
-let stopReelFlag = [];//slot reel stop flag 
-let reelCounts = []; //which image to position 
-let slotFrameheight; //frame size
-let slotReelsHeight; //overall reel (image) size
-let slotReelitemHeight;//size of one reel (image) 
-let slotReelStartheight;//initial image value
+function rotateImages(ul) {
+    const items = Array.from(ul.children);
+    ul.appendChild(items.shift());
+}
+//you can change the speed of changing images here
+function start() {
+    chance--;
+    intervalIds.forEach(clearInterval);
+    intervalIds = reels.map((ul) => setInterval(() => rotateImages(ul), 1000));
+}
 
-//مقدار دهی اولیه
-let slot = {
-
-    init: function () {
-
-        stopReelFlag[0] = stopReelFlag[1] = stopReelFlag[2] = false;
-        reelCounts[0] = reelCounts[1] = reelCounts[2] = 0;
-    },
-    //click event
-    start: function () {
-
-        slot.init();
-        for (let index = 0; index < 3; index++) {
-            slot.animation(index);
-        }
-    },
-    // stop buuton click event 
-    stop: function (i) {
-        stopReelFlag[i] = true;
-        if (stopReelFlag[0] && stopReelFlag[1] && stopReelFlag[2]) {
-            StartBtn.removeAttribute("disabled");
-        }
-    },
-    // set first position
-    resetLocationInfo: function () {
-        slotFrameheight = ScreenSlot.offsetHeight;
-        slotReelsHeight = reels[0].offsetHeight;
-        slotReelitemHeight = reel[0].offsetHeight;
-        slotReelStartheight = -slotReelsHeight;
-        slotReelStartheight += slotFrameheight - (slotFrameheight / 2) + slotReelitemHeight * 3 / 2;
-
-        for (let i = 0; i < reels > length; i++) {
-            reels[i].style.top = slotReelStartheight + "px";
-        }
-    },
-    //move the slot
-    animation: function (index) {
-
-        if (reelCounts[index] >= 6) {
-            reelCounts[index] = 0;
-        }
-        $(".reels").eq(index).animate({
-            "top": slotReelStartheight + (reelCounts[index] * slotReelitemHeight)
-        }, {
-            duration: sec,
-            easing: "linear",
-            complete: function () {
-                if (stopReelFlag[index]) {
-                    return;
-                }
-                reelCounts[index]++;
-                slot.animation(index);
-            }
-        });
-    },
-
-};
+function stop(index) {
+    clearInterval(intervalIds[index]);
+    const firstImageAlt = reels[index].querySelector("li:first-child img").alt;
+    altTextArray.push(firstImageAlt);
+    stoppedCount++;
+    if(chance == 0){
+        alert("Game over 😥 ")
+        //TODO: the start butten shouldent work anymore id user click on it
+    }
+    else if (stoppedCount === 3 && altTextArray.every(alt => alt === altTextArray[0])) {
+        alert("😍🎇 All pictures Are the same!\nYour character is: " + altTextArray[0]);
+        stoppedCount = 0;
+        chance -- ;
+    }
+    else if (stoppedCount === 3 && (altTextArray[0] === altTextArray[1] ||
+                                    altTextArray[0] === altTextArray[2] ||
+                                    altTextArray[1] === altTextArray[2])){
+             chance ++;
+             alert("That Was close! 😲 \n You'll get a new chance \n"+ chance + "left");
+        
+    }
+}
 
 window.onload = function () {
-    slot.init();
+    
     slot.resetLocationInfo();
     StartBtn.addEventListener("click", function (e) {
         e.target.setAttribute("disabled", true);
@@ -87,3 +55,4 @@ window.onload = function () {
         });
     }
 };
+
