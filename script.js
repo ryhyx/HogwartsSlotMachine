@@ -12,7 +12,7 @@ function rotateImages(ul) {
 function start() {
     chance--;
     intervalIds.forEach(clearInterval);
-    intervalIds = reels.map((ul) => setInterval(() => rotateImages(ul), 1000));
+    intervalIds = reels.map((ul) => setInterval(() => rotateImages(ul), 500));
 }
 
 function stop(index) {
