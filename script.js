@@ -24,10 +24,9 @@ function stop(index) {
      if (stoppedCount === 3) {
         stoppedCount = 0;
          if (altTextArray.every(alt => alt === altTextArray[0])) {
-            chance+=1;
             alert("😍🎇 All pictures Are the same!\nYour character is: " + altTextArray[0]);
             StartBtn.disabled = true;
-            StartBtn.textContent = "Disabled";
+            StartBtn.textContent ="Refresh the game to play again!";
             StartBtn.style.color = "red";            
         } else if (altTextArray[0] === altTextArray[1] || altTextArray[0] === altTextArray[2] || altTextArray[1] === altTextArray[2]) {
             chance=chance+1;
