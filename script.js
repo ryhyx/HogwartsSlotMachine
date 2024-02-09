@@ -22,18 +22,22 @@ function stop(index) {
     stoppedCount++;
 
      if (stoppedCount === 3) {
-        // Reset the stoppedCount array and proceed to check for new images in a new try
         stoppedCount = 0;
          if (altTextArray.every(alt => alt === altTextArray[0])) {
             chance+=1;
             alert("😍🎇 All pictures Are the same!\nYour character is: " + altTextArray[0]);
-            
+            StartBtn.disabled = true;
+            StartBtn.textContent = "Disabled";
+            StartBtn.style.color = "red";            
         } else if (altTextArray[0] === altTextArray[1] || altTextArray[0] === altTextArray[2] || altTextArray[1] === altTextArray[2]) {
             chance=chance+1;
             alert("That Was close! 😲 \n You'll get a new chance \n" +chance+ " left");
         }
-        else if (chance===0){
+        else if (chance<=0){
             alert("Game over 😥 ")
+            StartBtn.disabled = true;
+            StartBtn.textContent = "Disabled";
+            StartBtn.style.color = "red";
         }
         else{
             alert(chance+ " left");
